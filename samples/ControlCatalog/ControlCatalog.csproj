@@ -44,6 +44,7 @@
     <PackageReference Include="Avalonia.Themes.Simple" />
     <PackageReference Include="Avalonia.Themes.Fluent" />
     <PackageReference Include="Avalonia.Fonts.Inter" />
+
     <!-- <PackageReference Include="Avalonia.Skia" /> -->
     <PackageReference Include="Avalonia.ReactiveUI" />
     <!-- <PackageReference Include="SkiaSharp" /> -->
@@ -52,7 +53,7 @@
   <ItemGroup>
 
     <ProjectReference Include="../../bindings/VelloSharp.Skia.Core/VelloSharp.Skia.Core.csproj" />
-    <ProjectReference Include="../../bindings/Avalonia.Skia/Avalonia.Skia.csproj" />
+    <ProjectReference Include="../../bindings/VelloSharp.Avalonia.Vello/VelloSharp.Avalonia.Vello.csproj" />
     <ProjectReference Include="../SampleControls/ControlSamples.csproj" />
   </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Avalonia;
 using VelloSharp;
 
@@ -91,8 +91,9 @@ internal static class VelloPathBuilderExtensions
 
     private static Vector NormalizeCorner(Vector corner, double width, double height)
     {
-        var rx = Math.Clamp(corner.X, 0, width / 2);
-        var ry = Math.Clamp(corner.Y, 0, height / 2);
+        var min = Math.Min(width, height);
+        var rx = Math.Clamp(corner.X, 0, min / 2);
+        var ry = Math.Clamp(corner.Y, 0, min / 2);
         return new Vector(rx, ry);
     }
 }

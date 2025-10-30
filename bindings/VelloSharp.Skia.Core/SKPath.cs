@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
 using VelloSharp;
@@ -24,6 +24,8 @@ public sealed class SKPath : IDisposable
     public SKPathFillType FillType { get; set; } = SKPathFillType.Winding;
 
     public bool IsEmpty => _commands.Count == 0;
+
+
 
     public SKRect TightBounds
     {
@@ -829,7 +831,7 @@ public sealed class SKPath : IDisposable
         return result;
     }
 
-    internal PathBuilder ToPathBuilder()
+    public PathBuilder ToPathBuilder()
     {
         var builder = new PathBuilder();
         foreach (var command in _commands)
