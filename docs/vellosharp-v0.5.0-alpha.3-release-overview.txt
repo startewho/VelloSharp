@@ -1,0 +1,43 @@
+# VelloSharp v0.5.0-alpha.3
+
+## Highlights
+- Composition coverage lands: scenes, canvases, and swapchains now expose layered render targets, region primitives, opacity masks, and scene-to-scene append so complex UI trees render without falling back to Skia.
+- Avalonia integration was modularized: the new `VelloSharp.Avalonia.Core` backend manages WGPU devices, surface leasing, and presentation options while `UseGpuInterop` toggles unlock sharing swapchain images with Skia diagnostics on desktop and wasm.
+- Skia compatibility leapt forward: `VelloSharp.Skia.Core` rewrites `SKSurface`, `SKCanvas`, filters, path effects, and decoders with test coverage, and the repo now vendors the signed `Avalonia.Skia` sources so the shim can target Avalonia internals safely.
+- SVG and samples expanded: `VelloSharp.Avalonia.Svg` ships a Vello-backed SVG control with caching, zoom/pan, and filter switches; the new Render Demo app plus refreshed catalog pages exercise animations, clipping, box shadows, and GPU interop.
+- Native FFI split & docs refresh: Rust bindings were split into dedicated `kurbo`, `peniko`, `image_codec`, and filter crates, exposing APIs such as `vello_scene_append_scene`; new docs cover Avalonia integration, graphics abstraction plans, and feature toggles alongside updated licensing.
+
+## Managed package updates
+
+### New modules
+- `VelloSharp.Avalonia.Core` — shared Avalonia device, surface, and presentation abstractions for Vello WGPU backends, including configurable feature sets and renderer options.
+- `VelloSharp.Avalonia.Svg` — drop-in Vello-powered SVG control featuring caching, wireframe inspection, zoom/pan, and filter disabling for diagnostics.
+
+### Renderer and interop
+- `VelloSharp` — adds scene append, layer stacks, region primitives, brush-backed stroke/fill paths, and offscreen layer orchestration with deterministic disposal.
+- `VelloSharp.Ffi.Core` & `VelloSharp.Ffi.Gpu` — extend interop structs, safe handles, and filter/image codec entry points, wiring through the new Rust crates.
+- `VelloSharp.Gpu` & `VelloSharp.Avalonia.Winit` — improve swapchain descriptors, bitmap handling, and window interop to support the new surface manager.
+- `VelloSharp.Avalonia.Vello` — reworked drawing context, swapchain render target, and text shaper to use the leasing model, GPU interop toggle, region dirty rect clipping, and box shadow rendering.
+
+### Skia and text shims
+- `VelloSharp.Skia.Core` — overhauls surfaces, canvases, color filters, image decoding, recording helpers, and Kurbo interop; new path effect and IO utilities align with the updated renderer.
+- `Avalonia.Skia` (vendored) — ships the upstream Avalonia Skia layer with signing metadata so the shim can link internals without relying on external package versions.
+- `VelloSharp.HarfBuzzSharp` — updates glyph structs and font helpers plus fixes line-break shaping regressions.
+
+### Samples and tooling
+- Samples gain the Render Demo (animation, text, surfaces, GPU interop) and refreshed SVG demo assets; `ControlCatalog` and `SampleControls` host the new Vello SVG control.
+- Docs add integration plans, feature toggle strategy, and shared abstraction proposals; build scripts and CI pack flows were updated for the expanded native payload.
+
+## Native runtime packages
+- New native crates (`kurbo_ffi`, `peniko_ffi`, `image_codec_ffi`, filter FFI) are built and shipped across all RIDs to back the expanded scene, filter, and image APIs.
+- `copy-runtimes.sh` and packaging workflows include the new libraries so MAUI, WinUI/UWP, browser, Linux, macOS, iOS, and Android bundles stay self-contained.
+
+## Getting started
+- Update existing Avalonia hosts to `VelloSharp.Avalonia.Vello` v0.5.0-alpha.3; use `VelloPlatform.Initialize(new VelloPlatformOptions { RendererOptions = { SupportMsaa8 = true } })` to opt into the new feature toggles.
+- Opt into GPU surface sharing during diagnostics with `using (SkiaSharpLeaseOptions.UseGpuInterop(width, height, transform, useHostScene: true)) { … }` when pairing with Skia overlays.
+- Adopt the SVG control via `dotnet add package VelloSharp.Avalonia.Svg` and drop `<velloSvg:Svg Source="Assets/Logo.svg" EnableCache="True" />` into XAML.
+- Run `dotnet test tests/VelloSharp.Avalonia.Core.Tests` and `tests/VelloSharp.Skia.Core.Tests` to validate device leasing and the expanded Skia API surface.
+
+## Links
+- Release artifacts and source: https://github.com/wieslawsoltes/VelloSharp/releases/tag/v0.5.0-alpha.3
+- Documentation site: https://wieslawsoltes.github.io/VelloSharp/
