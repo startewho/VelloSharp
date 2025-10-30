@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.IO;
 using System.Reflection;
@@ -30,27 +30,14 @@ internal static class VelloFontManager
 
         return s_fonts.GetOrAdd(glyphTypeface, static typeface =>
         {
-            var tryGetStream = typeface
-                .GetType()
-                .GetMethod(
-                    "TryGetStream",
-                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
-                    binder: null,
-                    types: new[] { typeof(Stream).MakeByRefType() },
-                    modifiers: null);
-
-            if (tryGetStream is not null)
+            if (typeface is VelloGlyphTypeface glyph)
             {
-                var arguments = new object?[] { null };
-                if (tryGetStream.Invoke(typeface, arguments) is bool succeeded && succeeded && arguments[0] is Stream stream)
-                {
-                    using var ms = new MemoryStream();
-                    stream.CopyTo(ms);
-                    return Font.Load(ms.ToArray());
-                }
+                return glyph.Font;
             }
-
-            throw new NotSupportedException($"Glyph typeface '{typeface.FamilyName}' does not expose a font stream compatible with Vello.");
+            else
+            {
+                throw new NotSupportedException($"Glyph typeface '{typeface.FamilyName}' does not expose a font stream compatible with Vello.");
+            }
         });
     }
 

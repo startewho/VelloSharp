@@ -2,7 +2,7 @@
 
 namespace VelloSharp.Avalonia.Vello.Geometry
 {
-    internal static class VelloPathDataExtension
+    internal static class VelloPathDataExtensions
     {
         public static SKPath ToSKPath(this VelloPathData.PathCommand[] cmds)
         {

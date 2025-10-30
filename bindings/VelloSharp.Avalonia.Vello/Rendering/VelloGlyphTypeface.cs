@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using Avalonia.Media;
 using VelloSharp;
@@ -42,6 +42,8 @@ internal sealed class VelloGlyphTypeface : IGlyphTypeface
 
         (_metrics, _glyphCount, _designFontSize) = LoadMetrics();
     }
+
+    public Font Font => _font;
 
     public string FamilyName { get; }
 
